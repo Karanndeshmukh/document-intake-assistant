@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Intake Assistant | Personal Wishes Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation / Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">📜</div>
+        <div>
+          <h1>Document Intake Assistant</h1>
+          <p class="subtitle">Conversational Interview &bull; Live Structured State &bull; Draft Document Generation</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="session-info">
+          <span class="session-label">Session ID:</span>
+          <span id="session-id-display" class="session-id">Initializing...</span>
+        </div>
+        <div id="status-pill" class="status-pill status-in-progress">In Progress</div>
+      </div>
+    </header>
+
+    <!-- Top Disclaimer Alert Banner -->
+    <div class="disclaimer-banner">
+      <span class="disclaimer-icon">⚠️</span>
+      <span><strong>FICTIONAL DOCUMENT &bull; NOT LEGAL ADVICE:</strong> This system demonstrates an LLM application technical test. It does not provide legal advice or create a legally binding instrument.</span>
+    </div>
+
+    <!-- Main 3-Panel Grid -->
+    <main class="three-panel-grid">
+      
+      <!-- PANEL 1: CONVERSATIONAL CHAT -->
+      <section class="panel chat-panel" aria-label="Conversational Interview">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="panel-icon">💬</span>
+            <h2>Conversational Interview</h2>
+          </div>
+          <span class="badge" id="message-count-badge">1 message</span>
+        </div>
+
+        <div class="panel-body chat-body" id="chat-messages">
+          <!-- Messages dynamically injected here -->
+        </div>
+
+        <!-- Typing / Processing Indicator -->
+        <div id="typing-indicator" class="typing-indicator hidden">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <span class="typing-text">Assistant is processing...</span>
+        </div>
+
+        <!-- Alert Notification Bar inside Chat -->
+        <div id="chat-alert" class="chat-alert hidden"></div>
+
+        <!-- Chat Input Form -->
+        <form id="chat-form" class="chat-input-area">
+          <input 
+            type="text" 
+            id="chat-input" 
+            placeholder="Type your answer or instruction (e.g., 'My name is Karan Deshmukh')..." 
+            autocomplete="off"
+            required
+          />
+          <button type="submit" id="send-btn" class="btn btn-primary">
+            <span>Send</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- PANEL 2: LIVE STRUCTURED STATE -->
+      <section class="panel state-panel" aria-label="Live Structured State">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="panel-icon">📊</span>
+            <h2>Live Structured State</h2>
+          </div>
+          <span id="completeness-badge" class="badge badge-warning">0 / 6 Required</span>
+        </div>
+
+        <div class="panel-body state-body">
+          <div class="progress-container">
+            <div class="progress-bar-bg">
+              <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Structured State Field Cards -->
+          <div class="state-cards">
+            
+            <div class="state-card" id="card-full-name">
+              <div class="state-card-header">
+                <span class="field-name">1. Full Legal Name</span>
+                <span class="field-status status-empty" id="status-full-name">Required</span>
+              </div>
+              <div class="field-value" id="val-full-name">&mdash;</div>
+            </div>
+
+            <div class="state-card" id="card-home-address">
+              <div class="state-card-header">
+                <span class="field-name">2. Residential Address</span>
+                <span class="field-status status-empty" id="status-home-address">Required</span>
+              </div>
+              <div class="field-value" id="val-home-address">&mdash;</div>
+            </div>
+
+            <div class="state-card" id="card-worldwide-assets">
+              <div class="state-card-header">
+                <span class="field-name">3. Worldwide Assets</span>
+                <span class="field-status status-empty" id="status-worldwide-assets">Required</span>
+              </div>
+              <div class="field-value" id="val-worldwide-assets">&mdash;</div>
+            </div>
+
+            <div class="state-card" id="card-children">
+              <div class="state-card-header">
+                <span class="field-name">4. Family & Dependents</span>
+                <span class="field-status status-empty" id="status-children">Required</span>
+              </div>
+              <div class="field-value" id="val-children">&mdash;</div>
+            </div>
+
+            <div class="state-card" id="card-executor">
+              <div class="state-card-header">
+                <span class="field-name">5. Appointed Executor</span>
+                <span class="field-status status-empty" id="status-executor">Required</span>
+              </div>
+              <div class="field-value" id="val-executor-name"><strong>Name:</strong> &mdash;</div>
+              <div class="field-value" id="val-executor-rel"><strong>Relationship:</strong> &mdash;</div>
+            </div>
+
+            <div class="state-card" id="card-gifts">
+              <div class="state-card-header">
+                <span class="field-name">6. Specific Gifts</span>
+                <span class="field-status status-optional">Optional</span>
+              </div>
+              <div class="field-value" id="val-specific-gifts">&mdash;</div>
+            </div>
+
+            <div class="state-card" id="card-wishes">
+              <div class="state-card-header">
+                <span class="field-name">7. Additional Wishes</span>
+                <span class="field-status status-optional">Optional</span>
+              </div>
+              <div class="field-value" id="val-additional-wishes">&mdash;</div>
+            </div>
+
+          </div>
+
+          <!-- Pending Clarification Box -->
+          <div id="pending-clarification-box" class="clarification-box hidden">
+            <div class="clarification-header">
+              <span>⚠️ Clarification / Contradiction Flagged</span>
+            </div>
+            <p id="clarification-text" class="clarification-text"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 3: DRAFT DOCUMENT PREVIEW -->
+      <section class="panel document-panel" aria-label="Draft Document Preview">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span class="panel-icon">📄</span>
+            <h2>Draft Document</h2>
+          </div>
+          <div class="panel-header-buttons">
+            <button id="copy-doc-btn" class="btn btn-secondary btn-sm" title="Copy draft to clipboard">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy</span>
+            </button>
+            <button id="reset-session-btn" class="btn btn-danger btn-sm" title="Reset this intake session">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="panel-body document-body">
+          <pre id="draft-document-view" class="document-view">Loading draft document preview...</pre>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
