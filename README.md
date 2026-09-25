@@ -66,11 +66,11 @@ A state-driven conversational interview web application built with **FastAPI**, 
 
 | Component | File | Responsibility |
 | :--- | :--- | :--- |
-| **`SessionManager`** | [`backend/state_manager.py`](file:///d:/document-intake-assistant/backend/state_manager.py) | Manages in-memory session lifecycles, chat history, and isolated `IntakeState` instances. |
-| **`LLMService`** | [`backend/llm/base.py`](file:///d:/document-intake-assistant/backend/llm/base.py) | Abstract interface defining extraction and response generation (`MockLLMService`, `GeminiLLMService`). |
-| **`ValidationEngine`** | [`backend/validation.py`](file:///d:/document-intake-assistant/backend/validation.py) | Deterministic guardrails: detects contradictions, blocks ambiguities, and executes explicit corrections. |
-| **`ConversationOrchestrator`** | [`backend/conversation.py`](file:///d:/document-intake-assistant/backend/conversation.py) | Transactional pipeline coordinator connecting Session, LLM, Validation, and Document generation. |
-| **`DocumentGenerator`** | [`backend/document_generator.py`](file:///d:/document-intake-assistant/backend/document_generator.py) | Formats confirmed state into a structured, readable Personal Wishes Document. |
+| **`SessionManager`** | [`backend/state_manager.py`](backend/state_manager.py) | Manages in-memory session lifecycles, chat history, and isolated `IntakeState` instances. |
+| **`LLMService`** | [`backend/llm/base.py`](backend/llm/base.py) | Abstract interface defining extraction and response generation (`MockLLMService`, `GeminiLLMService`). |
+| **`ValidationEngine`** | [`backend/validation.py`](backend/validation.py) | Deterministic guardrails: detects contradictions, blocks ambiguities, and executes explicit corrections. |
+| **`ConversationOrchestrator`** | [`backend/conversation.py`](backend/conversation.py) | Transactional pipeline coordinator connecting Session, LLM, Validation, and Document generation. |
+| **`DocumentGenerator`** | [`backend/document_generator.py`](backend/document_generator.py) | Formats confirmed state into a structured, readable Personal Wishes Document. |
 
 ---
 
@@ -280,4 +280,4 @@ Access the UI at `http://localhost:8000`.
 3. **No Authentication**: Sessions use generated UUIDs without user authentication.
 4. **Fictional Document Scope**: Designed specifically for the Personal Wishes Document intake exercise.
 
-See [`PRODUCTION_NOTES.md`](file:///d:/document-intake-assistant/PRODUCTION_NOTES.md) for full architectural recommendations on scaling, persistence, security, and observability.
+See [`PRODUCTION_NOTES.md`](PRODUCTION_NOTES.md) for full architectural recommendations on scaling, persistence, security, and observability.
